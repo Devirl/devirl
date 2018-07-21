@@ -1,0 +1,11 @@
+
+ul > li:first-child {
+	color: black;
+	font-size: 25px;
+}
+ul > li:nth-child(2n) {
+	color: blue;
+}
+ul > li:nth-child(2n):before {
+	content:"ユーザー名："
+}
