@@ -1,0 +1,77 @@
+<html lang="ja">
+
+
+
+  <head>
+    <meta charset="UTF-8">
+    <link rel = "stylesheet" href="devirl_chat.css">
+    <!--link rel = "stylesheet" href="devirl_chat2.css"-->
+    <title>devirl_chat</title>
+
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>　　　　　　　　<!--(1)-->
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>　<!--(2)-->
+
+  </head>
+
+  <body>
+    <h2>
+      <span>Devirl_TalkRoom</span>
+    </h2>
+    <div class="background grain">
+    <div class="outer-scratch">
+    <div class="inner-scratch">
+
+      <div id='msgDiv'></div>                                                                     <!--(3)-->
+
+      <div align="center">
+      <input type='text' id='nameIn' size='80'
+       style="position: absolute; left: 0px; top: 130px;" placeholder='name'>                                          <!--(4)-->
+      <input type='text' id='msgIn' size='80'
+      style="position: absolute; right: px; top: 130px;"
+      placeholder='message'>
+      </div>                                  <!--(5)-->
+
+  </div>
+  </div>
+  </div>
+    <script>
+
+      var dStore = new Firebase('https://fbase-kseino1.firebaseio.com/');                         //(6)
+
+      $('#msgIn').keypress(function (e) {                                                         //(7)
+
+        if (e.keyCode == 13) {                                               　                   //(8)
+
+          var name = $('#nameIn').val();
+
+          var text = $('#msgIn').val();
+
+          dStore.push({name: name, text: text});                                                  //(9)
+
+          $('#msgIn').val('');
+
+        }
+
+      });
+
+      dStore.on('child_added', function(ss) {                                                    //(10)
+
+          var msg = ss.val();                                                                    //(11)
+
+          dspChatMsg(msg.name, msg.text);                                                        //(12)
+
+      });
+
+      function dspChatMsg(name, text) {                                                          //(13)
+
+        $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#msgDiv'));       //(14)
+        $('#msgDiv')[0].scrollTop = $('#msgDiv')[0].scrollHeight;                                //(15)
+
+      };
+
+    </script>
+
+  </body>
+
+</html>
